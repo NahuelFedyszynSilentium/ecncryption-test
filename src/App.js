@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
-import {AES, enc} from 'crypto-js';
+import {AES, enc,HmacSHA256} from 'crypto-js';
 
 function App() {
 
@@ -9,6 +9,7 @@ function App() {
   const [key, setkey] = useState("w9z$C&F)J@NcRfUj");
   const [result, setResult] = useState("");
   const [decoded, setDecoded] = useState("")
+  const [iv, setIv] = useState("");
 
   function handleTextChange(value){
     setTextToEncode(value);
@@ -20,15 +21,19 @@ function App() {
 
   function handleEncodePress(){
     var encoded = AES.encrypt(textToEncode,key).toString();
-    //setResult(encodeURIComponent(encoded));
-    setResult(encoded);
+    setResult(encodeURIComponent(encoded));
+    // setResult(encoded);
   }
 
   function handleDecodePress(){
-    //const decoded = AES.decrypt(decodeURIComponent(result),key);
-    const decoded = AES.decrypt(result,key);
-    setDecoded(decoded.toString());
-    //setDecoded(decoded.toString(enc.Utf8));
+    const decoded = AES.decrypt(decodeURIComponent(result),key);
+    //const decoded = AES.decrypt(result,key);
+    setDecoded(decoded.toString(enc.Utf8));
+  }
+
+  function handleGenerateIV(){
+    var newIv = enc.Hex.parse("1011121314151617");
+    setIv(newIv.toString());
   }
 
   return (
@@ -39,7 +44,11 @@ function App() {
           <div className="textContainer">
             <p className="containerText">{key}</p>
           </div>
-          <button>Generate Key</button>
+          <p className="paragraph">IV:</p>
+          <div className="textContainer">
+            <p className="containerText">{iv}</p>
+          </div>
+          <button onClick={handleGenerateIV}>Generate IV</button>
           <div className="column">
             <div className="column">
               <p className="paragraphSm">
