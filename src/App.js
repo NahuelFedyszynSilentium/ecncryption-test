@@ -20,12 +20,15 @@ function App() {
 
   function handleEncodePress(){
     var encoded = AES.encrypt(textToEncode,key).toString();
-    setResult(encodeURIComponent(encoded));
+    //setResult(encodeURIComponent(encoded));
+    setResult(encoded);
   }
 
   function handleDecodePress(){
-    const decoded = AES.decrypt(decodeURIComponent(result),key);
-    setDecoded(decoded.toString(enc.Utf8));
+    //const decoded = AES.decrypt(decodeURIComponent(result),key);
+    const decoded = AES.decrypt(result,key);
+    setDecoded(decoded.toString());
+    //setDecoded(decoded.toString(enc.Utf8));
   }
 
   return (
